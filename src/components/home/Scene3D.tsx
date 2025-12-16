@@ -4,6 +4,12 @@ import React, { useRef, useEffect } from 'react';
 
 import * as THREE from 'three';
 
+import { FontLoader } from 'three/examples/jsm/Addons.js';
+import { TTFLoader } from 'three/examples/jsm/Addons.js';
+import { TextGeometry } from 'three/examples/jsm/Addons.js';
+
+/* Display your skills (Nuxt, AWS, PyTorch) as interconnected "nodes" on a 3D abstract circuit board, with subtle animations flowing between them */
+
 export default function Scene3D () {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -22,11 +28,30 @@ export default function Scene3D () {
       // Append renderer to container
       containerRef.current?.appendChild(renderer.domElement);
       camera.position.x = 5;
-      camera.position.z = 5;
+      camera.position.z = 10;
       camera.position.y = 5;
       camera.lookAt(0, 0, 0);
 
       scene.background = null;
+
+      // FONT
+      const ttfLoader = new TTFLoader();
+      /* public/fonts/Satoshi-Variable.ttf */
+      ttfLoader.load('/fonts/Satoshi-Variable.ttf', (fontData) => {
+        const fontLoader = new FontLoader();
+        const font = fontLoader.parse(fontData);
+        const textGeometry = new TextGeometry('NuxtJS', {
+          font: font,
+          size: 1,
+          depth: 0.2
+        });
+        const textMaterial = new THREE.MeshStandardMaterial();
+        const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+        textMesh.position.set(0, 1, 0);
+        textMesh.castShadow = true;
+        textMesh.receiveShadow = true;
+        scene.add(textMesh);
+      });
 
       // =================== LIGHT
       const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
