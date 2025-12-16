@@ -24,7 +24,7 @@ export default function Experience() {
 
   return (
     <div className="w-full">
-      <div className="flex flex-wrap items-center justify-evenly gap-4">
+      <div className="flex flex-col items-center justify-evenly gap-4">
         {experiences.map((item, index) => (
           <ExperienceCard item={item} key={index} />
         ))}
