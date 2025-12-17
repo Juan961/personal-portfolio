@@ -25,18 +25,20 @@ export default function Scene3D() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined' && containerRef.current) {
+      const container = containerRef.current;
+      const width = container.clientWidth;
+      const height = container.clientHeight || window.innerHeight;
+
       // Setup
       const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+      const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000);
       const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setSize(width, height);
       renderer.setClearColor(0x000000, 0);
       
-      if (containerRef.current) {
-        containerRef.current.innerHTML = '';
-        containerRef.current.appendChild(renderer.domElement);
-      }
+      container.innerHTML = '';
+      container.appendChild(renderer.domElement);
 
       camera.position.set(0, 0, 35);
       camera.lookAt(0, 0, 0);
@@ -221,7 +223,34 @@ export default function Scene3D() {
       // Animation State
       let activeClusterIndex = -1;
 
-      const animate = (time: number) => {
+      // Resize Handler
+      const handleResize = () => {
+        if (!container) return;
+        const w = container.clientWidth;
+        const h = container.clientHeight || window.innerHeight;
+        
+        renderer.setSize(w, h);
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+
+        // Responsive Camera Distance
+        const sceneRadius = 25; 
+        const fovRad = camera.fov * (Math.PI / 180);
+        
+        const distV = sceneRadius / Math.sin(fovRad / 2);
+        const distH = sceneRadius / (Math.sin(fovRad / 2) * camera.aspect);
+        
+        const distance = Math.max(35, Math.max(distV, distH));
+        camera.position.z = distance;
+      };
+
+      const resizeObserver = new ResizeObserver(handleResize);
+      resizeObserver.observe(container);
+      
+      // Initial sizing
+      handleResize();
+
+      const animate = () => {
         requestAnimationFrame(animate);
         
         // 1. Main System Orbit (Pure Y-axis rotation)
@@ -272,7 +301,7 @@ export default function Scene3D() {
             const isActive = i === activeClusterIndex;
             const targetColor = isActive ? new THREE.Color(0xFFFFFF) : new THREE.Color(0x555555);
             const targetOpacityPoints = isActive ? 1.0 : 0.6;
-            const targetOpacityLines = isActive ? 0.0 : 0.3; // Disappear when active
+            const targetOpacityLines = isActive ? 0 : 0.3; // The opacity only makes them black. Why?
             const targetSize = isActive ? 0.3 : 0.05; 
 
             // Lerp Color
@@ -311,9 +340,14 @@ export default function Scene3D() {
         renderer.render(scene, camera);
       };
 
-      animate(0);
+      animate();
+
+      return () => {
+        resizeObserver.disconnect();
+        renderer.dispose();
+      };
     }
   }, []);
 
-  return <div className='w-full md:w-1/2' ref={containerRef} />;
+  return <div className='w-full md:w-1/2 max-h-125' ref={containerRef} />;
 }
