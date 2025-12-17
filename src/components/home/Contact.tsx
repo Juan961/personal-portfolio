@@ -4,7 +4,15 @@ import Image from 'next/image';
 import TitleSection from './TitleSection';
 import { useState } from 'react';
 
+import { ArrowPathIcon } from '@heroicons/react/24/solid';
+
 export default function Contact() {
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
+  const [error, setError] = useState<string | null>(null)
+
+  const [sent, setSent] = useState<boolean>(false)
+
   const [formData, setFormData] = useState({
     email: '',
     subject: '',
@@ -19,9 +27,39 @@ export default function Contact() {
     }));
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    if (sent || isLoading) return;
+
     e.preventDefault();
-    console.log(formData);
+
+    setIsLoading(true)
+    setError(null)
+
+    try {
+      const response = await fetch('/api/send', {
+        method: 'POST',
+        body: JSON.stringify(formData),
+      })
+ 
+      if (!response.ok) {
+        throw new Error('Failed to submit the data. Please try again.')
+      }
+ 
+      const status = response.status;
+
+      if (status !== 200) {
+        throw new Error('Failed to submit the data. Please try again.')
+      }
+
+      setSent(true)
+
+    } catch (error) {
+      // @ts-expect-error This is fine for catching generic errors
+      setError(error.message)
+      console.error(error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -31,6 +69,8 @@ export default function Contact() {
       <form onSubmit={handleSubmit} className="text-primary flex flex-col gap-3 max-w-md w-full mx-auto font-light">
         <input 
           name="email"
+          required
+          readOnly={isLoading || sent}
           value={formData.email}
           onChange={handleChange} 
           minLength={5} 
@@ -41,6 +81,8 @@ export default function Contact() {
         />
         <input 
           name="subject"
+          required
+          readOnly={isLoading || sent}
           value={formData.subject}
           onChange={handleChange} 
           minLength={8} 
@@ -49,17 +91,29 @@ export default function Contact() {
           placeholder="Subject" 
           className="bg-contrast-secondary/40 border-secondary border rounded px-2 py-1"
         />
-        <textarea 
+        <textarea
           name="message"
+          required
+          readOnly={isLoading || sent}
           value={formData.message}
           onChange={handleChange} 
           minLength={50} 
           maxLength={600}
           rows={6}
           placeholder="Message" 
-          className="bg-contrast-secondary/40 border-secondary border rounded px-2 py-1"
+          className="w-full resize-y bg-contrast-secondary/40 border-secondary border rounded px-2 py-1"
         ></textarea>
-        <button className='font-medium bg-white/30 border-contrast-primary border-2 cursor-not-allowed rounded py-2 hover:bg-contrast-primary transition-colors duration-500' type='submit'>Send</button>
+
+        <button className='font-medium bg-white/30 border-contrast-primary border-2 cursor-pointer rounded py-2 hover:bg-contrast-primary transition-colors duration-500' type='submit'>{isLoading ? <ArrowPathIcon className="animate-spin h-5 w-5 mx-auto" /> : 'Send'}</button>
+
+        {
+          sent ? <p className='text-green-500'>Message sent successfully</p> : null
+        }
+
+        {
+          error && !sent ? <p className='text-red-500'>Failed to send message</p> : null
+        }
+
       </form>
 
       <ul className='mt-10 flex gap-10 flex-wrap justify-center'>
