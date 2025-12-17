@@ -40,7 +40,7 @@ export default function Scene3D() {
       container.innerHTML = '';
       container.appendChild(renderer.domElement);
 
-      camera.position.set(0, 0, 35);
+      camera.position.set(0, 0, 40);
       camera.lookAt(0, 0, 0);
       
       const mainGroup = new THREE.Group();
@@ -233,21 +233,11 @@ export default function Scene3D() {
       const handleResize = () => {
         if (!container) return;
         const w = container.clientWidth;
-        const h = container.clientHeight || window.innerHeight;
-        
+        const h = container.clientHeight;
+
         renderer.setSize(w, h);
         camera.aspect = w / h;
         camera.updateProjectionMatrix();
-
-        // Responsive Camera Distance
-        const sceneRadius = 25; 
-        const fovRad = camera.fov * (Math.PI / 180);
-        
-        const distV = sceneRadius / Math.sin(fovRad / 2);
-        const distH = sceneRadius / (Math.sin(fovRad / 2) * camera.aspect);
-        
-        const distance = Math.max(35, Math.max(distV, distH));
-        camera.position.z = distance;
       };
 
       const resizeObserver = new ResizeObserver(handleResize);
@@ -355,5 +345,5 @@ export default function Scene3D() {
     }
   }, []);
 
-  return <div className='w-full md:w-1/2 max-h-125' ref={containerRef} />;
+  return <div className='w-full lg:w-3/5 max-h-80 md:max-h-125' ref={containerRef} />;
 }
