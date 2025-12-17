@@ -108,7 +108,13 @@ export default function Scene3D() {
       // Materials & Refs
       const clusterRefs = clusters.map(() => ({
         pointsMat: new THREE.PointsMaterial({ size: 0.1, color: 0x333333, transparent: true, opacity: 0.1 }),
-        linesMat: new THREE.LineBasicMaterial({ color: 0x333333, transparent: true, opacity: 0.05 }),
+        linesMat: new THREE.LineBasicMaterial({ 
+          color: 0x333333, 
+          transparent: true, 
+          opacity: 0.05,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false
+        }),
         textMat: new THREE.MeshBasicMaterial({ color: 0x333333, transparent: true, opacity: 0.1 }),
         textMesh: null as THREE.Mesh | null,
         skillMeshes: [] as THREE.Mesh[],
@@ -300,8 +306,8 @@ export default function Scene3D() {
         clusterRefs.forEach((ref, i) => {
             const isActive = i === activeClusterIndex;
             const targetColor = isActive ? new THREE.Color(0xFFFFFF) : new THREE.Color(0x555555);
-            const targetOpacityPoints = isActive ? 1.0 : 0.6;
-            const targetOpacityLines = isActive ? 0 : 0.3; // The opacity only makes them black. Why?
+            const targetOpacityPoints = isActive ? 0.4 : 0.6;
+            const targetOpacityLines = isActive ? 0 : 0.15;
             const targetSize = isActive ? 0.3 : 0.05; 
 
             // Lerp Color
