@@ -7,7 +7,7 @@ import Footer from "@/components/home/Footer";
 export default function Home() {
   return (
     <div className="animated-bg min-h-screen">
-      <main className="container pt-14 mx-auto px-40 flex flex-col gap-14">
+      <main className="container pt-14 mx-auto px-10 sm:px-16 lg:px-40 flex flex-col gap-14">
         <Header />
 
         <Experience />

@@ -4,8 +4,8 @@ import { MapPinIcon } from '@heroicons/react/24/solid'
 
 export default function Header() {
   return (
-    <header className="w-full text-white font-jakarta flex items-center gap-4">
-      <div className="w-1/2 flex flex-col gap-4 py-20">
+    <header className="w-full text-white font-jakarta flex flex-col md:flex-row items-center gap-4">
+      <div className="w-full md:w-1/2 flex flex-col gap-4 py-20">
         <h1 className="text-5xl font-medium">Juan José García - Software & Mechatronic</h1>
 
         <span className="flex gap-2 mt-2">

@@ -187,5 +187,5 @@ export default function Scene3D() {
     }
   }, []);
 
-  return <div className='w-1/2' ref={containerRef} />;
+  return <div className='w-full md:w-1/2' ref={containerRef} />;
 }
