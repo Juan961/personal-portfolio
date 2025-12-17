@@ -6,6 +6,21 @@ import { FontLoader } from 'three/examples/jsm/Addons.js';
 import { TTFLoader } from 'three/examples/jsm/Addons.js';
 import { TextGeometry } from 'three/examples/jsm/Addons.js';
 
+const shuffleArray = (arr: string[]) => {
+  const shuffled = [...arr];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const rand = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[rand]] = [shuffled[rand], shuffled[i]];
+  }
+  return shuffled;
+};
+
+const getRandomSubset = (arr: string[], size:number) => {
+  if (size >= arr.length) return shuffleArray(arr); // Return a full shuffle if size is too large
+  const shuffled = shuffleArray(arr);
+  return shuffled.slice(0, size);
+};
+
 export default function Scene3D() {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -31,9 +46,9 @@ export default function Scene3D() {
 
       // Cluster
       const clusters = [
-        { name: 'Mechatronics', pos: new THREE.Vector3(15, 0, 0) },
-        { name: 'Web', pos: new THREE.Vector3(15 * Math.cos(2 * Math.PI / 3), 0, 15 * Math.sin(2 * Math.PI / 3)) },
-        { name: 'Deep Learning', pos: new THREE.Vector3(15 * Math.cos(4 * Math.PI / 3), 0, 15 * Math.sin(4 * Math.PI / 3)) }
+        { name: 'Mechatronics', pos: new THREE.Vector3(15, 0, 0), skills: ['Embedded', 'PID', 'RST'] },
+        { name: 'Web', pos: new THREE.Vector3(15 * Math.cos(2 * Math.PI / 3), 0, 15 * Math.sin(2 * Math.PI / 3)), skills: ['NuxtJs', 'Azure'] },
+        { name: 'Deep Learning', pos: new THREE.Vector3(15 * Math.cos(4 * Math.PI / 3), 0, 15 * Math.sin(4 * Math.PI / 3)), skills: ['PyTorch', 'Python', 'AWS'] }
       ];
 
       // Materials & Refs
@@ -41,7 +56,9 @@ export default function Scene3D() {
         pointsMat: new THREE.PointsMaterial({ size: 0.1, color: 0x333333, transparent: true, opacity: 0.1 }),
         linesMat: new THREE.LineBasicMaterial({ color: 0x333333, transparent: true, opacity: 0.05 }),
         textMat: new THREE.MeshBasicMaterial({ color: 0x333333, transparent: true, opacity: 0.1 }),
+        skillMat: new THREE.MeshBasicMaterial({ color: 0xFFFFFF, transparent: true, opacity: 0 }),
         textMesh: null as THREE.Mesh | null,
+        skillMeshes: [] as THREE.Mesh[],
         rotationGroup: null as THREE.Group | null
       }));
 
@@ -100,6 +117,8 @@ export default function Scene3D() {
         ttfLoader.load('/fonts/Satoshi-Variable.ttf', (json) => {
             const fontLoader = new FontLoader();
             const font = fontLoader.parse(json);
+            
+            // Main Label
             const textGeo = new TextGeometry(cluster.name, {
                 font: font, size: 1.2, depth: 0, curveSegments: 4, bevelEnabled: false
             });
@@ -108,6 +127,23 @@ export default function Scene3D() {
             textMesh.position.set(0, radius + 1.5, 0);
             group.add(textMesh);
             clusterRefs[index].textMesh = textMesh;
+
+            // Skills
+            cluster.skills.forEach((skill, skillIdx) => {
+                const skillGeo = new TextGeometry(skill, {
+                    font: font, size: 0.6, depth: 0, curveSegments: 4, bevelEnabled: false
+                });
+                skillGeo.center();
+                const skillMesh = new THREE.Mesh(skillGeo, clusterRefs[index].skillMat);
+                
+                // Position skills
+                const angle = (skillIdx / cluster.skills.length) * Math.PI * 2;
+                const skillRadius = 3.5;
+                skillMesh.position.set(Math.cos(angle) * skillRadius, Math.sin(angle) * skillRadius, 0);
+                
+                group.add(skillMesh);
+                clusterRefs[index].skillMeshes.push(skillMesh);
+            });
         });
       });
 
@@ -158,18 +194,21 @@ export default function Scene3D() {
             const isActive = i === activeClusterIndex;
             const targetColor = isActive ? new THREE.Color(0xFFFFFF) : new THREE.Color(0x555555);
             const targetOpacityPoints = isActive ? 1.0 : 0.6;
-            const targetOpacityLines = isActive ? 0.5 : 0.3;
+            const targetOpacityLines = isActive ? 0.0 : 0.3; // Disappear when active
+            const targetOpacitySkills = isActive ? 1.0 : 0.0; // Appear when active
             const targetSize = isActive ? 0.3 : 0.05; 
 
             // Lerp Color
             ref.pointsMat.color.lerp(targetColor, 0.05);
             ref.linesMat.color.lerp(targetColor, 0.05);
             ref.textMat.color.lerp(targetColor, 0.05);
+            ref.skillMat.color.lerp(targetColor, 0.05);
 
             // Lerp Opacity
             ref.pointsMat.opacity += (targetOpacityPoints - ref.pointsMat.opacity) * 0.05;
             ref.linesMat.opacity += (targetOpacityLines - ref.linesMat.opacity) * 0.05;
             ref.textMat.opacity += (targetOpacityPoints - ref.textMat.opacity) * 0.05;
+            ref.skillMat.opacity += (targetOpacitySkills - ref.skillMat.opacity) * 0.05;
 
             // Lerp Size
             ref.pointsMat.size += (targetSize - ref.pointsMat.size) * 0.05;
@@ -178,6 +217,9 @@ export default function Scene3D() {
             if (ref.textMesh) {
                 ref.textMesh.lookAt(camera.position);
             }
+            ref.skillMeshes.forEach(mesh => {
+                mesh.lookAt(camera.position);
+            });
         });
 
         renderer.render(scene, camera);
