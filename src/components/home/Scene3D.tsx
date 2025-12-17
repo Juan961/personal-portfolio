@@ -46,9 +46,61 @@ export default function Scene3D() {
 
       // Cluster
       const clusters = [
-        { name: 'Mechatronics', pos: new THREE.Vector3(15, 0, 0), skills: ['Embedded', 'PID', 'RST'] },
-        { name: 'Web', pos: new THREE.Vector3(15 * Math.cos(2 * Math.PI / 3), 0, 15 * Math.sin(2 * Math.PI / 3)), skills: ['NuxtJs', 'Azure'] },
-        { name: 'Deep Learning', pos: new THREE.Vector3(15 * Math.cos(4 * Math.PI / 3), 0, 15 * Math.sin(4 * Math.PI / 3)), skills: ['PyTorch', 'Python', 'AWS'] }
+        {
+          name: 'Mechatronics',
+          pos: new THREE.Vector3(15, 0, 0),
+          skills: [
+            'Embedded',
+            'PID',
+            'RST',
+            'Raspberry Pi',
+            'IoT Systems',
+            'Sensors',
+            'Actuators',
+            'Telemetry',
+            'Control Systems',
+            'State Variables'
+          ]
+        },
+        {
+          name: 'Web',
+          pos: new THREE.Vector3(
+            15 * Math.cos(2 * Math.PI / 3),
+            0,
+            15 * Math.sin(2 * Math.PI / 3)
+          ),
+          skills: [
+            'NuxtJs',
+            'Azure',
+            'Serverless',
+            'Azure Functions',
+            'AWS Lambda',
+            'APIs',
+            'Cloud Architecture',
+            'Cosmos DB',
+            'DynamoDB',
+            'Frontend Architecture'
+          ]
+        },
+        {
+          name: 'Deep Learning',
+          pos: new THREE.Vector3(
+            15 * Math.cos(4 * Math.PI / 3),
+            0,
+            15 * Math.sin(4 * Math.PI / 3)
+          ),
+          skills: [
+            'PyTorch',
+            'Python',
+            'AWS',
+            'Neural Networks',
+            'Supervised Learning',
+            'Model Training',
+            'Loss Functions',
+            'Data Preprocessing',
+            'ML Fundamentals'
+          ]
+        }
       ];
 
       // Materials & Refs
@@ -56,9 +108,10 @@ export default function Scene3D() {
         pointsMat: new THREE.PointsMaterial({ size: 0.1, color: 0x333333, transparent: true, opacity: 0.1 }),
         linesMat: new THREE.LineBasicMaterial({ color: 0x333333, transparent: true, opacity: 0.05 }),
         textMat: new THREE.MeshBasicMaterial({ color: 0x333333, transparent: true, opacity: 0.1 }),
-        skillMat: new THREE.MeshBasicMaterial({ color: 0xFFFFFF, transparent: true, opacity: 0 }),
         textMesh: null as THREE.Mesh | null,
         skillMeshes: [] as THREE.Mesh[],
+        skillMats: [] as THREE.MeshBasicMaterial[],
+        visibleSkills: new Set<string>(),
         rotationGroup: null as THREE.Group | null
       }));
 
@@ -134,7 +187,10 @@ export default function Scene3D() {
                     font: font, size: 0.6, depth: 0, curveSegments: 4, bevelEnabled: false
                 });
                 skillGeo.center();
-                const skillMesh = new THREE.Mesh(skillGeo, clusterRefs[index].skillMat);
+                
+                // Individual material for each skill to allow independent fading
+                const mat = new THREE.MeshBasicMaterial({ color: 0xFFFFFF, transparent: true, opacity: 0 });
+                const skillMesh = new THREE.Mesh(skillGeo, mat);
                 
                 // Position skills
                 const angle = (skillIdx / cluster.skills.length) * Math.PI * 2;
@@ -143,6 +199,7 @@ export default function Scene3D() {
                 
                 group.add(skillMesh);
                 clusterRefs[index].skillMeshes.push(skillMesh);
+                clusterRefs[index].skillMats.push(mat);
             });
         });
       });
@@ -162,32 +219,53 @@ export default function Scene3D() {
       mainGroup.add(globalLines);
 
       // Animation State
-      let activeClusterIndex = 0;
+      let activeClusterIndex = -1;
 
       const animate = (time: number) => {
         requestAnimationFrame(animate);
         
         // 1. Main System Orbit (Pure Y-axis rotation)
-        mainGroup.rotation.y += 0.001;
+        mainGroup.rotation.y += 0.003;
 
         // 2. Individual Cluster Rotation (Electrons)
         clusterRefs.forEach((ref) => {
           if (ref.rotationGroup) {
-            ref.rotationGroup.rotation.y -= 0.002;
-            ref.rotationGroup.rotation.x += 0.001;
+            ref.rotationGroup.rotation.y -= 0.005;
+            ref.rotationGroup.rotation.x += 0.002;
           }
         });
 
         // Focus Switch Logic (Proximity based)
         let minDistance = Infinity;
+        let newActiveIndex = 0;
         clusters.forEach((cluster, i) => {
           const worldPos = cluster.pos.clone().applyEuler(mainGroup.rotation);
           const distance = worldPos.distanceTo(camera.position);
           if (distance < minDistance) {
             minDistance = distance;
-            activeClusterIndex = i;
+            newActiveIndex = i;
           }
         });
+
+        if (newActiveIndex !== activeClusterIndex) {
+            activeClusterIndex = newActiveIndex;
+            // Pick 3 random skills for the new active cluster
+            const subset = getRandomSubset(clusters[activeClusterIndex].skills, 3);
+            clusterRefs[activeClusterIndex].visibleSkills = new Set(subset);
+
+            // Reposition the visible skills (Top, Middle, Bottom)
+            const activeRef = clusterRefs[activeClusterIndex];
+            const activeCluster = clusters[activeClusterIndex];
+            
+            subset.forEach((skillName, i) => {
+                const skillIdx = activeCluster.skills.indexOf(skillName);
+                if (skillIdx !== -1 && activeRef.skillMeshes[skillIdx]) {
+                    // Top (+3), Middle (0), Bottom (-3)
+                    const yPos = 3 - (i * 3); 
+                    activeRef.skillMeshes[skillIdx].position.set(0, yPos, 0);
+                }
+            });
+        }
 
         // Lerp Styles
         clusterRefs.forEach((ref, i) => {
@@ -195,20 +273,17 @@ export default function Scene3D() {
             const targetColor = isActive ? new THREE.Color(0xFFFFFF) : new THREE.Color(0x555555);
             const targetOpacityPoints = isActive ? 1.0 : 0.6;
             const targetOpacityLines = isActive ? 0.0 : 0.3; // Disappear when active
-            const targetOpacitySkills = isActive ? 1.0 : 0.0; // Appear when active
             const targetSize = isActive ? 0.3 : 0.05; 
 
             // Lerp Color
             ref.pointsMat.color.lerp(targetColor, 0.05);
             ref.linesMat.color.lerp(targetColor, 0.05);
             ref.textMat.color.lerp(targetColor, 0.05);
-            ref.skillMat.color.lerp(targetColor, 0.05);
 
             // Lerp Opacity
             ref.pointsMat.opacity += (targetOpacityPoints - ref.pointsMat.opacity) * 0.05;
             ref.linesMat.opacity += (targetOpacityLines - ref.linesMat.opacity) * 0.05;
             ref.textMat.opacity += (targetOpacityPoints - ref.textMat.opacity) * 0.05;
-            ref.skillMat.opacity += (targetOpacitySkills - ref.skillMat.opacity) * 0.05;
 
             // Lerp Size
             ref.pointsMat.size += (targetSize - ref.pointsMat.size) * 0.05;
@@ -217,6 +292,17 @@ export default function Scene3D() {
             if (ref.textMesh) {
                 ref.textMesh.lookAt(camera.position);
             }
+
+            // Skill Lerps (Individual)
+            ref.skillMats.forEach((mat, skillIdx) => {
+                const skillName = clusters[i].skills[skillIdx];
+                const isVisible = isActive && ref.visibleSkills.has(skillName);
+                const targetOpacity = isVisible ? 1.0 : 0.0;
+                
+                mat.color.lerp(targetColor, 0.05);
+                mat.opacity += (targetOpacity - mat.opacity) * 0.05;
+            });
+            
             ref.skillMeshes.forEach(mesh => {
                 mesh.lookAt(camera.position);
             });
