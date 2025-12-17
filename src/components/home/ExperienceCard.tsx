@@ -7,7 +7,7 @@ interface Props {
 export default function ExperienceCard({ item }: Props) {
   return (
     <article className="text-white font-jakarta flex flex-col gap-4 max-w-xl border rounded p-6 bg-[#1d1d1d]">
-      <div className="flex justify-between items-start gap-4">
+      <div className="flex justify-between items-start gap-4 flex-wrap">
         <div>
           <h3 className="text-2xl font-semibold">{item.title}</h3>
           <p className="text-sm text-gray-400">{item.company}</p>
