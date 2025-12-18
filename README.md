@@ -1,6 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🤵 Juan José García - Portfolio
 
-## Getting Started
+This is a personal portfolio website built with [Next.js](https://nextjs.org) to showcase my experience and projects in Software Development and Mechatronics Engineering.
+
+## 🚀 Live Demo
+
+You can view the live portfolio at: [jotajotag.vercel.app](jotajotag.vercel.app)
+
+## 📄 Overview
+
+The portfolio features a modern, responsive design with interactive 3D elements to visualize my skill set. It includes sections for my professional experience, key projects, and a functional contact form.
+
+## 📒 Features
+
+-   **Interactive 3D Skills Visualization**: A dynamic 3D scene built with **Three.js** that visualizes skill clusters (Mechatronics, Web, Deep Learning) as orbiting systems.
+-   **Project Showcase**: Detailed cards highlighting key projects with descriptions, technologies used, and links.
+-   **Contact Form**: A fully functional contact form for reliable email delivery.
+-   **Responsive Design**: Styled with **Tailwind CSS 4** for a seamless experience across all devices.
+-   **Type Safety**: Built entirely with **TypeScript** for robust and maintainable code.
+
+## 🛠️ Tech Stack
+
+-   **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
+-   **Language**: [TypeScript](https://www.typescriptlang.org/)
+-   **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
+-   **3D Graphics**: [Three.js](https://threejs.org/)
+-   **Icons**: [Heroicons](https://heroicons.com/)
+
+## ✍️ Getting Started
 
 First, run the development server:
 
@@ -16,21 +42,11 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🗂️ Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+-   `src/app`: Main application routes and layout.
+-   `src/components`: Reusable UI components (Header, Projects, Contact, Scene3D, etc.).
+-   `src/types`: TypeScript definitions.
+-   `public`: Static assets (fonts, icons).
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Made with ❤️ by Juan José García
