@@ -1,7 +1,9 @@
 export interface IProject {
   title: string;
-  points: string[];
-  technologies: string[];
-  icon: string
-  link?: string;
+  challenge: string;
+  solution: string;
+  techStack: string[];
+  role: string;
+  typeResource?: 'video' | 'article' | 'repository' | 'demo';
+  resourceLink?: string;
 }

@@ -1,13 +1,19 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-import { Plus_Jakarta_Sans } from 'next/font/google'; 
+import { Plus_Jakarta_Sans, Space_Grotesk } from 'next/font/google'; 
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
   variable: '--jakarta',
   display: 'swap',
-}) 
+})
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--space-grotesk',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: "Portfolio | Juan Garcia",
@@ -22,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${plusJakartaSans.variable} antialiased`}
+        className={`${plusJakartaSans.variable} ${spaceGrotesk.variable} antialiased`}
       >
         {children}
       </body>

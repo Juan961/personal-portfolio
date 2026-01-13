@@ -1,10 +1,11 @@
 'use client'
 
-import Image from 'next/image';
-import TitleSection from './TitleSection';
 import { useState } from 'react';
 
-import { ArrowPathIcon } from '@heroicons/react/24/solid';
+import Image from 'next/image';
+import Link from 'next/link';
+
+import { ArrowPathIcon, CommandLineIcon } from '@heroicons/react/24/solid';
 
 export default function Contact() {
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -43,11 +44,11 @@ export default function Contact() {
         },
         body: JSON.stringify(formData),
       })
- 
+
       if (!response.ok) {
         throw new Error('Failed to submit the data. Please try again.')
       }
- 
+
       const status = response.status;
 
       if (status !== 200) {
@@ -66,76 +67,94 @@ export default function Contact() {
   }
 
   return (
-    <section className="w-full flex flex-col font-jakarta">
-      <TitleSection title="Contact" />
+    <section className="relative py-24 px-6 lg:px-12 bg-[#0c1018]" id="about">
+      <div className="mx-auto max-w-4xl text-center">
+        <div className="inline-flex items-center justify-center p-3 bg-primary/10 rounded-full mb-8">
+          <CommandLineIcon className="h-12 w-12 text-primary" />
+        </div>
+        <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Bridging the Gap</h2>
+        <p className="text-lg md:text-xl text-gray-400 mb-12 leading-relaxed">
+          I am a multidisciplinary engineer who speaks both languages: the physics of machines and the logic of code. My work focuses on creating seamless integrations between physical hardware and intelligent software systems.
+        </p>
+        <div className="border-t border-[#232f48] pt-12" id="contact">
+          <h3 className="text-xl font-bold text-white mb-8">GET IN TOUCH</h3>
+          <div className="w-full max-w-lg mx-auto bg-surface-dark p-8 rounded-xl border border-[#232f48]">
+            <form onSubmit={handleSubmit} className="space-y-6 text-left">
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-2">Subject</label>
+                <input
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleChange}
+                  required
+                  minLength={8}
+                  className="w-full rounded-lg bg-background-dark border border-[#232f48] px-4 py-3 text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
+                  placeholder="Project Inquiry"
+                  type="text"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-2">Email</label>
+                <input
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  className="w-full rounded-lg bg-background-dark border border-[#232f48] px-4 py-3 text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
+                  placeholder="your.email@example.com"
+                  type="email"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-2">Message</label>
+                <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                  minLength={50}
+                  className="w-full rounded-lg bg-background-dark border border-[#232f48] px-4 py-3 text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors min-h-30"
+                  placeholder="How can we work together? (Min 50 chars)"
+                ></textarea>
+              </div>
 
-      <form onSubmit={handleSubmit} className="text-primary flex flex-col gap-3 max-w-md w-full mx-auto font-light">
-        <input 
-          name="email"
-          required
-          readOnly={isLoading || sent}
-          value={formData.email}
-          onChange={handleChange} 
-          minLength={5} 
-          maxLength={254} 
-          type="email" 
-          placeholder="Email" 
-          className="bg-contrast-secondary/40 border-secondary border rounded px-2 py-1"
-        />
-        <input 
-          name="subject"
-          required
-          readOnly={isLoading || sent}
-          value={formData.subject}
-          onChange={handleChange} 
-          minLength={8} 
-          maxLength={120} 
-          type="text" 
-          placeholder="Subject" 
-          className="bg-contrast-secondary/40 border-secondary border rounded px-2 py-1"
-        />
-        <textarea
-          name="message"
-          required
-          readOnly={isLoading || sent}
-          value={formData.message}
-          onChange={handleChange} 
-          minLength={50} 
-          maxLength={600}
-          rows={6}
-          placeholder="Message" 
-          className="w-full resize-y bg-contrast-secondary/40 border-secondary border rounded px-2 py-1"
-        ></textarea>
+              {error && <p className="text-red-500 text-sm">{error}</p>}
+              {sent && <p className="text-green-500 text-sm">Message sent successfully!</p>}
 
-        <button className='font-medium bg-white/30 border-contrast-primary border-2 cursor-pointer rounded py-2 hover:bg-contrast-primary transition-colors duration-500' type='submit'>{isLoading ? <ArrowPathIcon className="animate-spin h-5 w-5 mx-auto" /> : 'Send'}</button>
-
-        {
-          sent ? <p className='text-green-500'>Message sent successfully</p> : null
-        }
-
-        {
-          error && !sent ? <p className='text-red-500'>Failed to send message</p> : null
-        }
-
-      </form>
-
-      <ul className='mt-10 flex gap-10 flex-wrap justify-center'>
-        <li>
-          <a target="_blank" href="https://www.linkedin.com/in/jotajotag/">
-            <Image src="/icons/linkedin-logo.webp" alt="LinkedIn Logo" width={50} height={50} className='invert-50 hover:invert-0 transition-all duration-300' />
-          </a>
-        </li>
-        <li>
-          <a target="_blank" href="https://github.com/Juan961">
-            <Image src="/icons/github-logo.webp" alt="GitHub Logo" width={50} height={50} className='invert-50 hover:invert-0 transition-all duration-300' />
-          </a>
-        </li>
-        <li>
-          <a target="_blank" href="https://platzi.com/p/juan961">
-            <Image src="/icons/platzi-logo.webp" alt="Platzi Logo" width={50} height={50} className='invert-50 hover:invert-100 transition-all duration-300' />
-          </a>
-        </li>
-      </ul>
+              <button 
+                disabled={isLoading || sent}
+                className={`w-full flex items-center justify-center rounded-lg px-6 py-4 text-sm font-bold text-white transition-colors cursor-pointer ${isLoading || sent ? 'bg-gray-600 cursor-not-allowed' : 'bg-primary hover:bg-blue-600'}`} 
+                type="submit"
+              >
+                {isLoading ? (
+                  <>
+                    <ArrowPathIcon className="h-5 w-5 animate-spin mr-2" />
+                    SENDING...
+                  </>
+                ) : sent ? (
+                  'MESSAGE SENT'
+                ) : (
+                  'SEND MESSAGE'
+                )}
+              </button>
+            </form>
+          </div>
+          <div className="flex flex-wrap justify-center gap-8 md:gap-16 mt-12">
+            <Link className="group flex items-center gap-2 text-gray-400 hover:text-white transition-colors" target="_blank" href="https://www.linkedin.com/in/jotajotag/">
+              <Image src="/icons/linkedin-logo.webp" alt="LinkedIn Logo" width={24} height={24} className='invert-50 group-hover:invert-0 transition-all duration-300' />
+              <span className="text-lg font-medium">LinkedIn</span>
+            </Link>
+            <Link className="group flex items-center gap-2 text-gray-400 hover:text-white transition-colors" target="_blank" href="https://github.com/Juan961">
+              <Image src="/icons/github-logo.webp" alt="GitHub Logo" width={24} height={24} className='invert-50 group-hover:invert-0 transition-all duration-300' />
+              <span className="text-lg font-medium">GitHub</span>
+            </Link>
+            <Link className="group flex items-center gap-2 text-gray-400 hover:text-white transition-colors" target="_blank" href="https://platzi.com/p/juan961">
+              <Image src="/icons/platzi-logo.webp" alt="Platzi Logo" width={24} height={24} className='invert-50 group-hover:invert-100 transition-all duration-300' />
+              <span className="text-lg font-medium">Platzi</span>
+            </Link>
+          </div>
+        </div>
+      </div>
     </section>
   )
 }
