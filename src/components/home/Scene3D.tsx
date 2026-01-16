@@ -345,5 +345,5 @@ export default function Scene3D() {
     }
   }, []);
 
-  return <div className='w-full lg:w-3/5 max-h-80 md:max-h-125' ref={containerRef} />;
+  return <div className='w-full lg:w-2/5 max-h-80 md:max-h-125' ref={containerRef} />;
 }

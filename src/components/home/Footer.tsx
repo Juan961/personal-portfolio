@@ -1,7 +1,9 @@
 export default function Footer() {
+  const year = new Date().getFullYear();
+
   return (
-    <footer className="w-full font-jakarta border-contrast-primary border-t-2">
-      <p className="text-primary text-center text-sm font-light my-4">©2026 Juan Garcia. All rights reserved.</p>
+    <footer className="border-t border-[#232f48] bg-background-dark py-8 text-center text-sm text-gray-500">
+      <p>© {year} Juan José García. Engineered with precision.</p>
     </footer>
   );
 }

@@ -1,7 +1,7 @@
 export interface IExperience {
-  title: string;
   company: string;
   period: string;
+  title: string; // Job title
   description: string;
   technologies: string[];
 }
