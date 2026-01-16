@@ -27,13 +27,15 @@ export const projects: IProject[] = [
   },
   {
     slug: 'robot',
-    title: 'Autonomous Delivery Robot Fleet Simulation',
+    title: 'Autonomous Robot Fleet Simulation',
     shortDescription: 'Simulation platform for autonomous delivery robots in urban settings with real-time telemetry and control.',
     image: '/images/robot.png',
     challenge: 'Build an autonomous robot fleet management system capable of navigating urban environments with real-time obstacle detection, path planning, and coordinated multi-robot operations through cloud-based telemetry and control',
     solution: 'Currently developing a full-stack simulation platform integrating Webots for physics-based robot modeling, YOLO-based computer vision for obstacle detection, A* and Dynamic Window Approach for path planning, and AWS IoT Core for real-time fleet coordination. The system features a React dashboard displaying live telemetry from multiple robots, including position tracking, obstacle detection visualization, and delivery task assignment. Currently implementing reinforcement learning (PyTorch) for adaptive navigation behaviors in dynamic environments with pedestrians and traffic',
     techStack: ['AWS', 'IoT', 'React', 'Python', 'Typescript', 'Webots', 'PyTorch', 'MQTT'],
     role: 'Software & Mechatronic Engineering',
+    // typeResource: 'demo',
+    // resourceLink: 'https://....vercel.app'
   }
 ];
 

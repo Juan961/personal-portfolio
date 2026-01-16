@@ -4,7 +4,7 @@ import { ArrowRightIcon } from "@heroicons/react/24/solid"
 
 export default function About() {
   return (
-    <section className="relative flex flex-wrap justify-center px-6 lg:px-12 pt-25 pb-10">
+    <section className="relative flex flex-wrap justify-center px-6 lg:px-12 pt-25 pb-10 max-w-350 mx-auto">
       <div className="z-10 w-full lg:w-3/5">
         <div className="mb-6 flex items-center gap-3">
           <span className="h-0.5 w-12 bg-primary"></span>
