@@ -8,41 +8,19 @@
 
 @theme inline {
   --font-jakarta: var(--jakarta);
-  --color-black-primary: #161616;
-  --color-black-secondary: #1C1C1C;
-  --color-contrast-primary: #2B2B2B;
-  --color-contrast-secondary: #252525;
-  --color-primary: #FBFBFB;
-  --color-secondary: #67696D;
+  --font-space: var(--space-grotesk);
 
-  --animate-rotate-border: border-rotate 3s linear infinite;
-
-  @keyframes border-rotate {
-    to {
-      --border-angle: 360deg;
-    }
-  }
-}
-
-.animated-bg {
-  background: linear-gradient(-45deg, #000000, #1C1C1C, #0f0f0f, #1a1a1a, #161616);
-  background-size: 400% 400%;
-  animation: gradientShift 12s ease infinite;
-}
-
-@keyframes gradientShift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+  --color-primary: #135bec;
+  --color-background-light: #f6f6f8;
+  --color-background-dark: #101622;
+  --color-surface-dark: #161e2e;
 }
 
 canvas {
   width: 100% !important;
   height: auto !important;
+}
+
+html {
+  scroll-behavior: smooth;
 }

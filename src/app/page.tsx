@@ -3,13 +3,16 @@ import Experience from "@/components/home/Experience";
 import Projects from "@/components/home/Projects";
 import Contact from "@/components/home/Contact";
 import Footer from "@/components/home/Footer";
+import About from "@/components/home/About";
 
 export default function Home() {
   return (
-    <div className="animated-bg min-h-screen">
-      <main className="container pt-14 mx-auto px-10 sm:px-16 lg:px-40 flex flex-col gap-14">
-        <Header />
+    <div className="bg-background-dark min-h-screen font-space">
+      <Header />
 
+      <main className="">
+        <About />
+        
         <Experience />
 
         <Projects />
