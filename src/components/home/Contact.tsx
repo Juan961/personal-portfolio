@@ -140,15 +140,15 @@ export default function Contact() {
             </form>
           </div>
           <div className="flex flex-wrap justify-center gap-8 md:gap-16 mt-12">
-            <Link className="group flex items-center gap-2 text-gray-400 hover:text-white transition-colors" target="_blank" href="https://www.linkedin.com/in/jotajotag/">
+            <Link className="group flex items-center gap-2 text-gray-400 hover:text-white transition-colors" target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/in/jotajotag/">
               <Image src="/icons/linkedin-logo.webp" alt="LinkedIn Logo" width={24} height={24} className='invert-50 group-hover:invert-0 transition-all duration-300' />
               <span className="text-lg font-medium">LinkedIn</span>
             </Link>
-            <Link className="group flex items-center gap-2 text-gray-400 hover:text-white transition-colors" target="_blank" href="https://github.com/Juan961">
+            <Link className="group flex items-center gap-2 text-gray-400 hover:text-white transition-colors" target="_blank" rel="noopener noreferrer" href="https://github.com/Juan961">
               <Image src="/icons/github-logo.webp" alt="GitHub Logo" width={24} height={24} className='invert-50 group-hover:invert-0 transition-all duration-300' />
               <span className="text-lg font-medium">GitHub</span>
             </Link>
-            <Link className="group flex items-center gap-2 text-gray-400 hover:text-white transition-colors" target="_blank" href="https://platzi.com/p/juan961">
+            <Link className="group flex items-center gap-2 text-gray-400 hover:text-white transition-colors" target="_blank" rel="noopener noreferrer" href="https://platzi.com/p/juan961">
               <Image src="/icons/platzi-logo.webp" alt="Platzi Logo" width={24} height={24} className='invert-50 group-hover:invert-100 transition-all duration-300' />
               <span className="text-lg font-medium">Platzi</span>
             </Link>
