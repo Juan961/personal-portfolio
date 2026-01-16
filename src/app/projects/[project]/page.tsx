@@ -52,7 +52,7 @@ export default async function Project({ params }: PageProps) {
               <Role role={project.role} />
               { project.resourceLink ? <a className="group flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-3 text-sm font-bold text-white transition-all hover:bg-blue-600 hover:shadow-lg hover:shadow-primary/25" href={project.resourceLink || '#'} target="_blank" rel="noopener noreferrer">
                 Check the {project.typeResource}
-              </a> : <p className="group flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-3 text-sm font-medium text-white text-center">Currently developing it. Check tune for demo</p> }
+              </a> : <p className="group flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-3 text-sm font-medium text-white text-center">Currently developing it. Stay tuned for demo</p> }
             </div>
           </div>
           {false ? <Code /> : null }
