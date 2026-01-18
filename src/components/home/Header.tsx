@@ -1,6 +1,6 @@
 export default function Header() {
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center sm:justify-between border-b border-[#232f48]/50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-6 py-4 lg:px-12 max-w-350 mx-auto">
+    <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center sm:justify-between border-b border-[#232f48]/50 bg-background-dark/80 backdrop-blur-md px-6 py-4 lg:px-12 max-w-350 mx-auto">
       <div className="hidden sm:flex items-center gap-2 text-white group cursor-pointer">
         <h2 className="text-lg font-bold tracking-tight">JUAN JOSÉ GARCÍA</h2>
       </div>

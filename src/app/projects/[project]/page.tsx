@@ -39,8 +39,8 @@ export default async function Project({ params }: PageProps) {
 
       <main className="flex-1">
         <div className="mx-auto max-w-240 px-4 py-8 lg:px-0">
-          {false ? <div className="mb-12 overflow-hidden rounded-xl border border-gray-200 dark:border-[#232f48] shadow-2xl">
-            <div className="aspect-video w-full bg-cover bg-center bg-no-repeat bg-slate-200 dark:bg-[#1a2332]" data-alt="High fidelity dashboard interface showing charts and data tables" style={{ backgroundImage: `url(${project?.image})` }}></div>
+          {false ? <div className="mb-12 overflow-hidden rounded-xl border border-[#232f48] shadow-2xl">
+            <div className="aspect-video w-full bg-cover bg-center bg-no-repeat bg-[#1a2332]" data-alt="High fidelity dashboard interface showing charts and data tables" style={{ backgroundImage: `url(${project?.image})` }}></div>
           </div> : null}
           <div className="mb-16 grid grid-cols-1 gap-12 lg:grid-cols-12">
             <div className="lg:col-span-8 flex flex-col gap-10">

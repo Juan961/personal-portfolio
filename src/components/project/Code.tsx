@@ -2,7 +2,7 @@ import { CodeBracketIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
 
 export default function Code() {
   return (
-    <div className="mb-16 overflow-hidden rounded-xl bg-slate-900 dark:bg-[#0d1117] ring-1 ring-white/10">
+    <div className="mb-16 overflow-hidden rounded-xl bg-[#0d1117] ring-1 ring-white/10">
       <div className="border-b border-white/10 px-6 py-4 flex items-center justify-between">
         <h2 className="text-lg font-bold text-white flex items-center gap-2">
           <CodeBracketIcon className="h-6 w-6 text-primary" />
